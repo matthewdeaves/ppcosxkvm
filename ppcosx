@@ -162,7 +162,9 @@ cmd_setup() {
         ok "configured"
     fi
     jobs=$(sysctl -n hw.ncpu 2>/dev/null || echo 8)
-    if ! ninja -C "$QEMU_BUILD" -j "$jobs" qemu-system-ppc qemu-img \
+    # QEMU signs its binaries with Apple's Rez; a Mac OS toolchain's Rez
+    # (Retro68, MPW) earlier on PATH fails that last step.
+    if ! PATH="/usr/bin:$PATH" ninja -C "$QEMU_BUILD" -j "$jobs" qemu-system-ppc qemu-img \
             > "$QEMU_BUILD/ppcosx-build.log" 2>&1; then
         grep -E 'error|FAILED' "$QEMU_BUILD/ppcosx-build.log" | head -20
         die "build failed; full log: qemu/build/ppcosx-build.log"
@@ -206,7 +208,7 @@ cmd_doctor() {
     else
         bad "QEMU not built"; hint "./ppcosx setup"; fail=1
     fi
-    for f in "$FW_RADEON/openbios-ppc" "$FW_RADEON/ppc-ndrvloader" "$FW_RADEON/qemu_vga_hwc.ndrv" \
+    for f in "$FW_RADEON/openbios-ppc" "$FW_RADEON/ppc-ndrvloader" "$FW_RADEON/qemu_vga.ndrv" \
              "$FW_VGA/openbios-ppc" "$FW_VGA/ppc-ndrvloader"; do
         [ -f "$f" ] || { bad "missing ${f#$REPO/}"; fail=1; }
     done
@@ -340,7 +342,7 @@ build_common() {   # $1 = disk, $2 = "cd" when booting from CD
     QARGS=(-nodefaults -vga none
         -machine mac99,via=pmu -accel tcg,tb-size=256
         -smp cpus=1,sockets=1,cores=1,threads=1 -m "$RAM"
-        -display cocoa -audio coreaudio
+        -display cocoa,zoom-to-fit=on -audio coreaudio
         -drive "if=none,media=disk,id=hd,file.filename=$1,discard=unmap,detect-zeroes=unmap"
         -device "ide-hd,bus=ide.0,unit=0,drive=hd$hdboot")
     [ "$SNAPSHOT" = 1 ] && QARGS+=(-snapshot)
@@ -451,7 +453,6 @@ cmd_run() {
         if [ -n "$ROM" ]; then dev="$dev,romfile=$ROM,biosrom=$ROM"
         else dev="$dev,romfile="; fi
 
-        export QEMU_PPC_NDRV="$FW_RADEON/qemu_vga_hwc.ndrv"
         QARGS=(-L "$FW_RADEON" -L "$QEMU_DIR/pc-bios" "${QARGS[@]}"
             -device loader,addr=0x4000000,file="$FW_RADEON/ppc-ndrvloader"
             -prom-env "boot-command=$boot"

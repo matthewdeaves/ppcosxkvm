@@ -47,7 +47,7 @@ host   │ Apple Silicon GPU
    table in its display reporter. `ppcosx` pins the Radeon to PCI slot
    0x0E so that path is always right: `find-device` fails silently if
    the node sits anywhere else.
-3. **The NDRV** (`firmware/radeon/qemu_vga_hwc.ndrv`, the QemuMacDrivers VGA
+3. **The NDRV** (`firmware/radeon/qemu_vga.ndrv`, the QemuMacDrivers VGA
    driver with a hardware cursor added) drives the framebuffer, both for
    the boot screen and as the IONDRVFramebuffer. It's matched by the node's
    `name`/`compatible`, which is why those stay `QEMU,VGA`.

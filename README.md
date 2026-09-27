@@ -28,7 +28,7 @@ Mac OS X Tiger (PowerPC) install DVD image or an already installed PowerPC
 OS X disk.
 
 ```bash
-git clone https://github.com/linuxkid473/ppcosxkvm.git
+git clone https://github.com/matthewdeaves/ppcosxkvm.git
 cd ppcosxkvm
 ./ppcosx setup
 ```
@@ -98,9 +98,12 @@ TCG, so expect a fast G4 rather than a G5). See the
 
 ## Credits
 
-Built on [QEMU](https://www.qemu.org),
-[Spartan0285/poweremu-qemu](https://github.com/Spartan0285/poweremu-qemu)
-(the RV280 / Radeon 9200 emulation this extends to the R300), and
+Built on [QEMU](https://www.qemu.org) (the
+[radeon-9700](https://github.com/matthewdeaves/qemu/tree/radeon-9700) branch, shared
+with [QemuMac](https://github.com/matthewdeaves/QemuMac)),
+[linuxkid473/poweremu-qemu](https://github.com/linuxkid473/poweremu-qemu) (the R300
+work), [Spartan0285/poweremu-qemu](https://github.com/Spartan0285/poweremu-qemu)
+(the RV280 / Radeon 9200 emulation it extends to the R300), and
 [PowerEmu](https://github.com/Spartan0285/PowerEmu) (the hardware cursor NDRV
 patcher). It also uses [OpenBIOS](https://github.com/openbios/openbios) as
 shipped by [UTM](https://github.com/utmapp/UTM),

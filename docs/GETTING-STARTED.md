@@ -28,7 +28,7 @@ Combo Update (PPC)"). That's the version everything is tested on.
 ## 2. Get the code and build
 
 ```bash
-git clone https://github.com/linuxkid473/ppcosxkvm.git
+git clone https://github.com/matthewdeaves/ppcosxkvm.git
 cd ppcosxkvm
 ./ppcosx setup
 ```
@@ -109,6 +109,8 @@ Things to know:
 
 * **Mouse capture.** Click in the window to use the guest. **Ctrl+Option+G**
   gives the mouse back to macOS.
+* **Window size.** Drag the window edge to resize it; the guest's screen
+  scales to fit.
 * **Shutting down.** Use **Apple menu → Shut Down** in the guest, then the
   window closes. Closing the window or pressing Cmd+Q is like pulling the
   plug: fine in an emergency, but journaled HFS+ will have to replay its

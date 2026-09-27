@@ -8,7 +8,7 @@ firmware/               OpenBIOS, ndrvloader, NDRV (+ sources/patchers in src/)
   radeon/               firmware for the Radeon mode
   vga/                  stock UTM firmware for installing and --vga
   SHA1SUMS              checked by ./ppcosx doctor
-qemu/                   git submodule: the QEMU fork (branch r300)
+qemu/                   git submodule: matthewdeaves/qemu, branch radeon-9700
   hw/display/ppc_mac_gpu.c        the device: PCI, MMIO, CP/PM4, GART, 2D, scanout
   hw/display/ppc_mac_gpu_metal.m  Metal backend
   hw/display/r300/                R300 3D: state, PVS, US→MSL, draw assembly
@@ -32,10 +32,13 @@ build directory.
 
 ## Updating the QEMU fork
 
-`qemu/` is a submodule tracking the `r300` branch of the fork:
+`qemu/` is a submodule tracking the `radeon-9700` branch of
+[matthewdeaves/qemu](https://github.com/matthewdeaves/qemu/tree/radeon-9700), a few
+commits on a QEMU release (see its `README.radeon-9700.md`, including how to move it
+to a new release). QemuMac builds the same branch:
 
 ```bash
-cd qemu && git checkout r300 && <commit your changes> && git push
+cd qemu && git checkout radeon-9700 && <commit your changes> && git push
 cd .. && git add qemu && git commit -m "qemu: bump"      # pin the new commit
 ```
 
@@ -68,7 +71,6 @@ Environment variables read by the device. Set them in front of `ppcosx run`:
 | `PPCGPU_SEQ_LOG=1` | Packet sequence log (`/tmp/gpu_seq.log`), including 2D blits (`BBMRAW`) and 3D (`R3D`) lines. |
 | `PPCGPU_DEBUG_LOG=1` | General device debug log. |
 | `QEMU_COCOA_SRGB=1` | Exact sRGB colour conversion in the Cocoa UI (slower). |
-| `QEMU_PPC_NDRV=path` | Use a different NDRV (set by `ppcosx run`). |
 
 `./ppcosx run --trace-gpu` enables QEMU's `ppc_mac_gpu_*` trace events (every
 register access) into `vm/gpu-trace.log`. It's large and slow, but complete.
